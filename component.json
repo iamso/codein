@@ -1,0 +1,18 @@
+{
+  "name": "codein",
+  "repository": "iamso/codein",
+  "description": "Tokenized code input",
+  "version": "0.1.0",
+  "keywords": [
+    "code",
+    "input",
+    "tokenized"
+  ],
+  "scripts": [
+    "dist/codein.js",
+    "dist/codein.min.js",
+    "dist/codein.next.js",
+    "dist/codein.next.min.js"
+  ],
+  "license": "MIT"
+}

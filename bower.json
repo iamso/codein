@@ -1,0 +1,35 @@
+{
+  "name": "codein",
+  "version": "0.1.0",
+  "description": "Tokenized code input",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/iamso/codein.git"
+  },
+  "authors": [
+    "Steve Ottoz <so@dev.so>"
+  ],
+  "main": "dist/codein.next.js",
+  "license": "MIT",
+  "homepage": "https://github.com/iamso/codein",
+  "ignore": [
+    ".bower.json",
+    ".config",
+    ".editorconfig",
+    ".git",
+    ".gitattributes",
+    ".gitignore",
+    "demo",
+    "doc",
+    "extensions",
+    "gulpfile.js",
+    "node_modules",
+    "src"
+  ],
+  "keywords": [
+    "code",
+    "input",
+    "tokenized"
+  ],
+  "dependencies": {}
+}
