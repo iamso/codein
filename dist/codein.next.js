@@ -1,5 +1,5 @@
 /*!
- * codein - version 0.1.0
+ * codein - version 0.1.1
  *
  * Made with ❤ by Steve Ottoz so@dev.so
  *
@@ -35,6 +35,7 @@ export default class Codein {
     this.el.addEventListener('input', this._input);
     this.el.addEventListener('paste', this._paste);
     this.unlock();
+    this.value = this.value;
     this.fillMask();
     return this;
   }
