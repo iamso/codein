@@ -1,5 +1,5 @@
 /*!
- * codein - version 0.1.1
+ * codein - version 0.1.2
  *
  * Made with ❤ by Steve Ottoz so@dev.so
  *
@@ -57,11 +57,12 @@ export default class Codein {
     const range = window.getSelection().getRangeAt(0);
     const modifiers = [8, 13, 37, 38, 39, 40, 46];
     const value = this.value;
+    const selection = window.getSelection();
 
     this.clean();
 
     if (modifiers.indexOf(e.keyCode) < 0 && !e.metaKey && !e.ctrlKey) {
-      if ((e.keyCode > 47 && e.keyCode < 58 || e.keyCode > 95 && e.keyCode < 106) && !e.shiftKey && value.length < this.max) {
+      if ((e.keyCode > 47 && e.keyCode < 58 || e.keyCode > 95 && e.keyCode < 106) && !e.shiftKey && (selection.type === 'Range' && selection.baseNode.parentNode.classList.contains(this.digitClass) || value.length < this.max)) {
         const char = e.key || e.char;
         range.deleteContents();
 
