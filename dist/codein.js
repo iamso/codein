@@ -1,5 +1,5 @@
 /*!
- * codein - version 0.1.3
+ * codein - version 0.2.0
  *
  * Made with ❤ by Steve Ottoz so@dev.so
  *
@@ -61,6 +61,8 @@
       var maskChar = _ref$maskChar === undefined ? 0 : _ref$maskChar;
       var _ref$max = _ref.max;
       var max = _ref$max === undefined ? 6 : _ref$max;
+      var _ref$alphaNum = _ref.alphaNum;
+      var alphaNum = _ref$alphaNum === undefined ? false : _ref$alphaNum;
       var _ref$digitClass = _ref.digitClass;
       var digitClass = _ref$digitClass === undefined ? 'digit' : _ref$digitClass;
       var _ref$enter = _ref.enter;
@@ -72,8 +74,9 @@
 
       this.el = el;
       this.mask = mask;
-      this.maskChar = maskChar;
+      this.maskChar = '' + maskChar;
       this.max = ~~max;
+      this.alphaNum = !!alphaNum;
       this.digitClass = digitClass;
       this.enter = enter;
       this.update = update;
@@ -90,6 +93,15 @@
         this.el.addEventListener('keyup', this._input);
         this.el.addEventListener('input', this._input);
         this.el.addEventListener('paste', this._paste);
+
+        if (this.alphaNum) {
+          this.filterChars = /[^a-zA-Z0-9]/g;
+          this.allowChars = /^[a-zA-Z0-9]*$/;
+        } else {
+          this.filterChars = /[^0-9]/g;
+          this.allowChars = /^[0-9]*$/;
+        }
+
         this.unlock();
         this.value = this.value;
         this.fillMask();
@@ -106,6 +118,7 @@
       key: 'unlock',
       value: function unlock() {
         this.el.contentEditable = true;
+        this.el.spellcheck = false;
         this.el.classList.remove('locked');
         return this;
       }
@@ -119,14 +132,14 @@
       key: 'keydown',
       value: function keydown(e) {
         var range = window.getSelection().getRangeAt(0);
-        var modifiers = [8, 13, 37, 38, 39, 40, 46];
+        var modifiers = [8, 13, 16, 18, 37, 38, 39, 40, 46];
         var value = this.value;
         var selection = window.getSelection();
 
         this.clean();
 
         if (modifiers.indexOf(e.keyCode) < 0 && !e.metaKey && !e.ctrlKey) {
-          if ((e.keyCode > 47 && e.keyCode < 58 || e.keyCode > 95 && e.keyCode < 106) && !e.shiftKey && (selection.type === 'Range' && selection.baseNode.parentNode.classList.contains(this.digitClass) || value.length < this.max)) {
+          if (this.allowChars.test(e.key) && (selection.type === 'Range' && selection.baseNode.parentNode.classList.contains(this.digitClass) || value.length < this.max)) {
             var char = e.key || e.char;
             range.deleteContents();
 
@@ -154,7 +167,7 @@
     }, {
       key: 'paste',
       value: function paste(e) {
-        var value = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+        var value = (e.clipboardData || window.clipboardData).getData('text').replace(this.filterChars, '');
         var numbers = value.split('');
         var range = window.getSelection().getRangeAt(0);
         range.deleteContents();
@@ -177,7 +190,7 @@
         if (this.mask) {
           var numbers = this.value.split('');
           var length = numbers.length;
-          var mask = ' '.repeat(length) + '0'.repeat(this.max - length);
+          var mask = this.maskChar !== undefined && this.maskChar !== false && this.maskChar !== '' ? '\xa0'.repeat(length) + this.maskChar.repeat(this.max - length) : '\xa0'.repeat(this.max);
           this.mask.innerHTML = '';
 
           this.tokenize(mask, this.mask);

@@ -1,5 +1,5 @@
 /*!
- * codein - version 0.1.3
+ * codein - version 0.2.0
  *
  * Made with ❤ by Steve Ottoz so@dev.so
  *
@@ -13,14 +13,16 @@ export default class Codein {
     mask = document.querySelector('.codein-input-mask'),
     maskChar = 0,
     max = 6,
+    alphaNum = false,
     digitClass = 'digit',
     enter = () => {},
     update = () => {}
   } = {}) {
     this.el = el;
     this.mask = mask;
-    this.maskChar = maskChar;
+    this.maskChar = '' + maskChar;
     this.max = ~~max;
+    this.alphaNum = !!alphaNum;
     this.digitClass = digitClass;
     this.enter = enter;
     this.update = update;
@@ -34,6 +36,15 @@ export default class Codein {
     this.el.addEventListener('keyup', this._input);
     this.el.addEventListener('input', this._input);
     this.el.addEventListener('paste', this._paste);
+
+    if (this.alphaNum) {
+      this.filterChars = /[^a-zA-Z0-9]/g;
+      this.allowChars = /^[a-zA-Z0-9]*$/;
+    } else {
+      this.filterChars = /[^0-9]/g;
+      this.allowChars = /^[0-9]*$/;
+    }
+
     this.unlock();
     this.value = this.value;
     this.fillMask();
@@ -46,6 +57,7 @@ export default class Codein {
   }
   unlock() {
     this.el.contentEditable = true;
+    this.el.spellcheck = false;
     this.el.classList.remove('locked');
     return this;
   }
@@ -55,14 +67,14 @@ export default class Codein {
   }
   keydown(e) {
     const range = window.getSelection().getRangeAt(0);
-    const modifiers = [8, 13, 37, 38, 39, 40, 46];
+    const modifiers = [8, 13, 16, 18, 37, 38, 39, 40, 46];
     const value = this.value;
     const selection = window.getSelection();
 
     this.clean();
 
     if (modifiers.indexOf(e.keyCode) < 0 && !e.metaKey && !e.ctrlKey) {
-      if ((e.keyCode > 47 && e.keyCode < 58 || e.keyCode > 95 && e.keyCode < 106) && !e.shiftKey && (selection.type === 'Range' && selection.baseNode.parentNode.classList.contains(this.digitClass) || value.length < this.max)) {
+      if (this.allowChars.test(e.key) && (selection.type === 'Range' && selection.baseNode.parentNode.classList.contains(this.digitClass) || value.length < this.max)) {
         const char = e.key || e.char;
         range.deleteContents();
 
@@ -86,7 +98,7 @@ export default class Codein {
     this.fillMask();
   }
   paste(e) {
-    const value = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+    const value = (e.clipboardData || window.clipboardData).getData('text').replace(this.filterChars, '');
     const numbers = value.split('');
     const range = window.getSelection().getRangeAt(0);
     range.deleteContents();
@@ -107,7 +119,7 @@ export default class Codein {
     if (this.mask) {
       const numbers = this.value.split('');
       const length = numbers.length;
-      let mask = ' '.repeat(length) + '0'.repeat(this.max - length);
+      const mask = this.maskChar !== undefined && this.maskChar !== false && this.maskChar !== '' ? '\xa0'.repeat(length) + this.maskChar.repeat(this.max - length) : '\xa0'.repeat(this.max);
       this.mask.innerHTML = '';
 
       this.tokenize(mask, this.mask);
