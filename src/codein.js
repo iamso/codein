@@ -12,7 +12,7 @@ export default class Codein {
   } = {}) {
     this.el = el;
     this.mask = mask;
-    this.maskChar = maskChar;
+    this.maskChar = ''+maskChar;
     this.max = ~~max;
     this.digitClass = digitClass;
     this.enter = enter;
@@ -101,7 +101,11 @@ export default class Codein {
     if (this.mask) {
       const numbers = this.value.split('');
       const length = numbers.length;
-      let mask = ' '.repeat(length) + '0'.repeat(this.max - length);
+      const mask = this.maskChar !== undefined &&
+        this.maskChar !== false &&
+        this.maskChar !== '' ?
+          '\xa0'.repeat(length) + this.maskChar.repeat(this.max - length) :
+          '\xa0'.repeat(this.max);
       this.mask.innerHTML = '';
 
       this.tokenize(mask, this.mask);
