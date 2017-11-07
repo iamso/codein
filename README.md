@@ -30,6 +30,7 @@ const codein = new Codein({
   el: document.querySelector('.codein-input'),
   mask: document.querySelector('.codein-input-mask'),
   maskChar: 0,
+  alphaNum: false,
   max: 6,
   digitClass: 'digit',
   enter: codein => {},
@@ -81,7 +82,7 @@ codein.destroy(); // destroy the codein
 .codein-input-wrapper .codein-input-mask {
   font-size: 1rem;
   width: 100%;
-  min-height: 2rem;
+  height: 2rem;
   line-height: 2rem;
 }
 
@@ -99,6 +100,7 @@ codein.destroy(); // destroy the codein
   pointer-events: none;
   text-align: center;
   width: calc(100% / 6);
+  height: 100%;
 }
 ```
 
