@@ -1,5 +1,5 @@
 /*!
- * codein - version 0.2.0
+ * codein - version 0.2.1
  *
  * Made with ❤ by Steve Ottoz so@dev.so
  *
@@ -132,7 +132,7 @@
       key: 'keydown',
       value: function keydown(e) {
         var range = window.getSelection().getRangeAt(0);
-        var modifiers = [8, 13, 16, 18, 37, 38, 39, 40, 46];
+        var modifiers = [8, 9, 13, 16, 18, 20, 37, 38, 39, 40, 46];
         var value = this.value;
         var selection = window.getSelection();
 

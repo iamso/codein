@@ -1,12 +1,10 @@
 /*!
- * codein - version 0.2.0
+ * codein - version 0.2.1
  *
  * Made with ❤ by Steve Ottoz so@dev.so
  *
  * Copyright (c) 2017 Steve Ottoz
  */
-'use strict';
-
 export default class Codein {
   constructor({
     el = document.querySelector('.codein-input'),
@@ -67,7 +65,7 @@ export default class Codein {
   }
   keydown(e) {
     const range = window.getSelection().getRangeAt(0);
-    const modifiers = [8, 13, 16, 18, 37, 38, 39, 40, 46];
+    const modifiers = [8, 9, 13, 16, 18, 20, 37, 38, 39, 40, 46];
     const value = this.value;
     const selection = window.getSelection();
 
